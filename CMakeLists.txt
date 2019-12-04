@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 2.8)
 project(ORB_SLAM2)
 
 IF(NOT CMAKE_BUILD_TYPE)
-#  SET(CMAKE_BUILD_TYPE Release)
+  SET(CMAKE_BUILD_TYPE Release)
 ENDIF()
 
-#MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
+MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -W0 -MT -bigobj")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W0 -MT -bigobj")
@@ -37,6 +37,7 @@ LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 #      message(FATAL_ERROR "OpenCV > 2.4.3 not found.")
 #   endif()
 #endif()
+set(OpenCV_DIR ${PROJECT_SOURCE_DIR}/Thirdparty/opencv-2.4.13.6/${CMAKE_BUILD_TYPE})
 
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -78,9 +79,9 @@ src/Viewer.cc
 )
 
 LINK_DIRECTORIES(
-${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib
-${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib
-${PROJECT_SOURCE_DIR}/Thirdparty/Pangolin/lib
+${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/${CMAKE_BUILD_TYPE}
+${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/${CMAKE_BUILD_TYPE}
+${PROJECT_SOURCE_DIR}/Thirdparty/Pangolin/lib/${CMAKE_BUILD_TYPE}
 ${PROJECT_SOURCE_DIR}/lib)
 
 target_link_libraries(
@@ -95,13 +96,14 @@ pangolin.lib
 
 # Build examples
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/RGB-D)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/bin)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/RGB-D)
 
 add_executable(rgbd_tum
 Examples/RGB-D/rgbd_tum.cc)
 target_link_libraries(rgbd_tum ${PROJECT_NAME})
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo)
 
 add_executable(stereo_kitti
 Examples/Stereo/stereo_kitti.cc)
@@ -112,7 +114,7 @@ Examples/Stereo/stereo_euroc.cc)
 target_link_libraries(stereo_euroc ${PROJECT_NAME})
 
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
 
 add_executable(mono_tum
 Examples/Monocular/mono_tum.cc)
